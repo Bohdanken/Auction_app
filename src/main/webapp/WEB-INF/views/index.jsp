@@ -7,6 +7,7 @@
 <body>
 <h1>Spring Boot Form Handling Example</h1>
 <h2>Spring Form Tags with JSP</h2>
-<a href="/register">Click here</a>
+<a href="/login">Account exists</a>
+<a href="/register">Register</a>
 </body>
 </html>

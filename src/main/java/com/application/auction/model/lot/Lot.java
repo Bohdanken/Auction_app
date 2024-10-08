@@ -42,4 +42,11 @@ public class Lot {
         this.startPrice = startPrice;
         this.auction = auction;
     }
+
+
+
+    public Lot(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
