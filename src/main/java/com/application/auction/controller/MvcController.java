@@ -1,9 +1,10 @@
 package com.application.auction.controller;
 
+import com.application.auction.model.Bid;
 import com.application.auction.model.account.Account;
-import com.application.auction.model.auction.Auction;
-import com.application.auction.model.lot.Lot;
+import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
+import com.application.auction.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,15 @@ import java.util.List;
 @SessionAttributes("account")  // Cache "account" object in session
 public class MvcController {
     private final AuctionService auctionService;
+    private final BidService bidService;
+    private final AccountService accountService;
+
 
     @Autowired
-    public MvcController(AuctionService auctionService) {
+    public MvcController(AuctionService auctionService, BidService bidService, AccountService accountService) {
         this.auctionService = auctionService;
+        this.bidService = bidService;
+        this.accountService = accountService;
     }
 
     @ModelAttribute("account")
@@ -50,7 +56,7 @@ public class MvcController {
     @GetMapping("/bid")
     public String showBidForm(Model model) {
         if (!model.containsAttribute("account")) {
-            model.addAttribute("account",getAccount());
+            model.addAttribute("account", getAccount());
         }
         model.addAttribute("lots", auctionService.getLots(0));
         return "bid/bid_form";
@@ -62,14 +68,17 @@ public class MvcController {
                             @RequestParam("lot") int lotId,
                             @ModelAttribute("bidSize") double bidSize,
                             Model model, SessionStatus sessionStatus) {
-        // Process the account, selected lot, and bid size
 
-        // Add the received data to the model for confirmation
         model.addAttribute("account", account);
         model.addAttribute("lotName", auctionService.getLotNameById(lotId));
         model.addAttribute("bidSize", bidSize);
 
-        // Display a confirmation page or redirect to another view
-        return "bid/bid_confirm";  // You can create a separate JSP file for confirmation if needed
+        //Here it gets the real account object from the input
+        //and creates account if it doesnt exits
+        Account existingAccount = accountService.getAccount(account);
+
+        //TODO: Add validation of bigger bid
+        bidService.makeBid(new Bid(bidSize), auctionService.getLotById(lotId), existingAccount);
+        return "bid/bid_confirm";
     }
 }

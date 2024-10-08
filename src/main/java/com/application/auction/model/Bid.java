@@ -40,4 +40,8 @@ public class Bid {
         this.lot = lot;
         this.account = account;
     }
+
+    public Bid(double amount) {
+        this.amount = amount;
+    }
 }

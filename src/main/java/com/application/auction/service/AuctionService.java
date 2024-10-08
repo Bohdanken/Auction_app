@@ -34,16 +34,20 @@ public class AuctionService {
     }
 
     public String getLotNameById(int lotId) {
-        List<Lot> lots = getLots(Constants.AUCTION_ID);
-        if (lots == null || lots.isEmpty()) {
-            return "None";
-        }
-        return lots.stream().filter(x -> x.getId() == lotId).map(Lot::getName).findFirst().orElse("None");
+        String lotName = getLotById(lotId).getName();
+        return lotName == null || lotName.trim().isEmpty() ? "None" : lotName;
     }
-
 
 
     private Auction getAuction(int auctionId) {
         return auctionDAO.findById(auctionId).orElse(null);
+    }
+
+    public Lot getLotById(int lotId) {
+        List<Lot> lots = getLots(Constants.AUCTION_ID);
+        if (lots == null || lots.isEmpty()) {
+            return null;
+        }
+        return lots.stream().filter(x -> x.getId() == lotId).findFirst().orElse(null);
     }
 }
