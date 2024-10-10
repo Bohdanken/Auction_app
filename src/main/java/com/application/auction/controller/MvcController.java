@@ -127,6 +127,10 @@ public class MvcController {
 
 
         Bid bid = bidService.makeBid(new Bid(bidSize), lot, existingAccount);
+        if(bid==null){
+            model.addAttribute("error", "Bid was not placed");
+            return "error/error_page";
+        }
         auctionService.updateLot(lot, bid);
         auctionService.notifyClients();
 

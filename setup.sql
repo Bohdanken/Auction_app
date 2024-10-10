@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS lot (
     REFERENCES auction(id)
     );
 
+
 CREATE TABLE IF NOT EXISTS bid (
                                    id SERIAL NOT NULL,
                                    amount NUMERIC(10, 2) NOT NULL,
@@ -51,6 +52,11 @@ CREATE TABLE IF NOT EXISTS bid (
     FOREIGN KEY (lot_id)
     REFERENCES lot(id)
     );
+
+ALTER TABLE lot
+    ADD CONSTRAINT fk_highest_bid
+        FOREIGN KEY (highest_bid)
+            REFERENCES bid(id);
 
 
 
