@@ -1,4 +1,4 @@
-package com.application.auction.model;
+package com.application.auction.model.Bid;
 
 import com.application.auction.model.account.Account;
 import com.application.auction.model.lot.Lot;
@@ -31,7 +31,7 @@ public class Bid {
     private Lot lot;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account_id")
     private Account account;
 
     public Bid(double amount, LocalDateTime timeCreated, Lot lot, Account account) {

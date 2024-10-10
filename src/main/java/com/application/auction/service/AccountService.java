@@ -15,8 +15,9 @@ public class AccountService {
     }
 
     public Account getAccount(Account account) {
-        if(accountDAO.existsAccountByEmail(account.getEmail())){
-            return account;
+        Account existingAccount = accountDAO.findByEmail(account.getEmail());
+        if (existingAccount != null) {
+            return existingAccount;
         }
         return accountDAO.save(account);
     }

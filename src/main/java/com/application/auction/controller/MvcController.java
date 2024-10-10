@@ -1,7 +1,9 @@
 package com.application.auction.controller;
 
-import com.application.auction.model.Bid;
+import com.application.auction.model.Bid.Bid;
 import com.application.auction.model.account.Account;
+import com.application.auction.model.auction.Auction;
+import com.application.auction.model.lot.Lot;
 import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
 import com.application.auction.service.BidService;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +61,8 @@ public class MvcController {
         if (!model.containsAttribute("account")) {
             model.addAttribute("account", getAccount());
         }
-        model.addAttribute("lots", auctionService.getLots(0));
+        Auction currentAuction = auctionService.getCurrentAuction();
+        model.addAttribute("lots", auctionService.getLots(currentAuction.getId()));
         return "bid/bid_form";
     }
 
@@ -69,16 +73,38 @@ public class MvcController {
                             @ModelAttribute("bidSize") double bidSize,
                             Model model, SessionStatus sessionStatus) {
 
+        Auction currentAuction = auctionService.getCurrentAuction();
+        if (currentAuction == null) {
+            model.addAttribute("error", "No current auction is set.");
+            return "error_page";
+        }
+        account.setAuctions(new ArrayList<>(List.of(new Auction[]{currentAuction})));
+        account.setPassword("");
+
         model.addAttribute("account", account);
         model.addAttribute("lotName", auctionService.getLotNameById(lotId));
         model.addAttribute("bidSize", bidSize);
 
-        //Here it gets the real account object from the input
-        //and creates account if it doesnt exits
         Account existingAccount = accountService.getAccount(account);
 
-        //TODO: Add validation of bigger bid
-        bidService.makeBid(new Bid(bidSize), auctionService.getLotById(lotId), existingAccount);
+        Lot lot = auctionService.getLotById(lotId);
+        if (lot == null) {
+            model.addAttribute("error", "Invalid lot ID. Probably programmer messed up completely");
+            return "error_page";
+        }
+
+        double currentHighestBid = bidService.getCurrentHighestBid(lot);
+        if (bidSize <= currentHighestBid || bidSize <=lot.getStartPrice()) {
+            model.addAttribute("error", "Bid must be greater than the current highest bid of " + currentHighestBid + ".");
+            return "error_page";
+        }
+
+
+        bidService.makeBid(new Bid(bidSize), lot, existingAccount);
+
         return "bid/bid_confirm";
     }
+
+
+
 }

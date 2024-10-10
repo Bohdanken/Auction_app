@@ -1,6 +1,6 @@
 package com.application.auction.model.lot;
 
-import com.application.auction.model.Bid;
+import com.application.auction.model.Bid.Bid;
 import com.application.auction.model.auction.Auction;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class Lot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id")
-    private Long id;
+    private int id;
 
     @Column(name="name")
     private String name;
@@ -45,7 +45,7 @@ public class Lot {
 
 
 
-    public Lot(Long id, String name) {
+    public Lot(int id, String name) {
         this.id = id;
         this.name = name;
     }
