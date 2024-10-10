@@ -28,7 +28,8 @@ public class BidService {
 
 
     public Double getCurrentHighestBid(Lot lot) {
-        return bidRepository.findHighestBidForLot(lot.getId());
+        Double highestBid = bidRepository.findHighestBidForLot(lot.getId());
+        return highestBid != null ? highestBid : 0.0; // Returning 0.0 if no bids are present.
     }
 
 

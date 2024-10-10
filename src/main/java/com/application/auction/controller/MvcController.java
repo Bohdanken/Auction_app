@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -41,22 +42,38 @@ public class MvcController {
 
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/main";
     }
 
-    @GetMapping("/register")
-    public String showForm(Model model) {
-        Account user = new Account();
-        List<String> professionList = Arrays.asList("Developer", "Designer", "Tester");
+    @GetMapping("/main-page")
+    public String showMainPage(Model model) {
+        Auction currentAuction = auctionService.getCurrentAuction();
+        if (currentAuction == null) {
+            model.addAttribute("error", "No current auction is set.");
+            return "error_page";
+        }
 
-        model.addAttribute("user", user);
+        List<Lot> lots = auctionService.getLots(currentAuction.getId());
 
-        model.addAttribute("professionList", professionList);
+        model.addAttribute("auction", currentAuction);
+        model.addAttribute("lots", lots);
 
-        return "register_form";
+        model.addAttribute("totalRaised",  1000);   //TODO  напиши оце також!!!
+
+        return "main";
     }
+
+
+    @GetMapping("/auction-updates")
+    public SseEmitter getAuctionUpdates() {
+        SseEmitter emitter = new SseEmitter();
+        auctionService.addEmitter(emitter);
+        return emitter;
+    }
+
+
 
     @GetMapping("/bid")
     public String showBidForm(Model model) {
@@ -87,8 +104,6 @@ public class MvcController {
         model.addAttribute("lotName", auctionService.getLotNameById(lotId));
         model.addAttribute("bidSize", bidSize);
 
-        //Here it gets the real account object from the input
-        //and creates account if it doesnt exits
         Account existingAccount = accountService.getAccount(account);
 
         Lot lot = auctionService.getLotById(lotId);
@@ -98,6 +113,9 @@ public class MvcController {
         }
 
         double currentHighestBid = bidService.getCurrentHighestBid(lot);
+        if (bidSize <= currentHighestBid || bidSize <=lot.getStartPrice()) {
+            model.addAttribute("error", "Bid must be greater than the current highest bid");
+            return "error_page";
         if (bidSize <= currentHighestBid || bidSize <= lot.getStartPrice()) {
             NumberFormat formatter = new DecimalFormat("#0.00");
             model.addAttribute("error", "Bid must be greater than the current highest bid of "
@@ -108,6 +126,8 @@ public class MvcController {
 
         bidService.makeBid(new Bid(bidSize), lot, existingAccount);
 
+        auctionService.notifyClients();
+
         return "bid/bid_confirm";
     }
 
@@ -117,6 +137,9 @@ public class MvcController {
         model.addAttribute("lot", lot);
         return "lot/lot_data";
     }
+
+
+
 
 
 }

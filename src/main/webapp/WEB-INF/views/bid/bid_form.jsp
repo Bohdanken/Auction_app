@@ -8,6 +8,7 @@
         <%@include file="/WEB-INF/views/css/style.css" %>
     </style>
 </head>
+
 <body>
 <div class="container">
     <h2>Bid Information</h2>
