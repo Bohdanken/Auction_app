@@ -59,7 +59,7 @@ public class MvcController {
         model.addAttribute("auction", currentAuction);
         model.addAttribute("lots", lots);
 
-        model.addAttribute("totalRaised", 1000);   //TODO  напиши оце також!!!
+        model.addAttribute("totalRaised", lots.stream().map(bidService::getCurrentHighestBid).reduce(Double::sum).orElse(0D));
 
         return "main/main";
     }
