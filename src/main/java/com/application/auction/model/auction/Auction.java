@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -29,15 +27,11 @@ public class Auction {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "duration", columnDefinition = "INTERVAL")
-    private LocalTime duration;
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private AuctionStatus status;
-
     @Column(name = "start_timestamp")
     private LocalDateTime startTimestamp;
+
+    @Column(name = "end_timestamp")
+    private LocalDateTime endTimestamp;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private List<Lot> lotList;
@@ -50,11 +44,10 @@ public class Auction {
     )
     private List<Account> accounts;
 
-    public Auction(String name, String description, LocalTime duration, AuctionStatus status, LocalDateTime startTimestamp) {
+    public Auction(String name, String description, LocalDateTime endTimestamp,  LocalDateTime startTimestamp) {
         this.name = name;
         this.description = description;
-        this.duration = duration;
-        this.status = status;
+        this.endTimestamp = endTimestamp;
         this.startTimestamp = startTimestamp;
     }
 }

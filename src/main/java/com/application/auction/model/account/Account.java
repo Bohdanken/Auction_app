@@ -1,6 +1,6 @@
 package com.application.auction.model.account;
 
-import com.application.auction.model.Bid;
+import com.application.auction.model.Bid.Bid;
 import com.application.auction.model.auction.Auction;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,9 +29,6 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private AccountRole accountRole;
 
     @OneToMany(mappedBy = "account")
     private List<Bid> bids;
@@ -45,11 +42,10 @@ public class Account {
     private List<Auction> auctions;
 
 
-    public Account(String name, String email, String password, AccountRole accountRole) {
+    public Account(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.accountRole = accountRole;
     }
 
     public Account(String name, String email) {

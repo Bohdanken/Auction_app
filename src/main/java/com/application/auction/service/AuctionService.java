@@ -1,10 +1,11 @@
 package com.application.auction.service;
 
-import com.application.auction.dao.AuctionDAO;
 import com.application.auction.model.auction.Auction;
+import com.application.auction.model.auction.AuctionRepository;
 import com.application.auction.model.lot.Lot;
-import com.application.auction.util.Constants;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,42 +13,60 @@ import java.util.List;
 
 @Service
 public class AuctionService {
-    private final AuctionDAO auctionDAO;
 
-    private List<Lot> getLots() {
-        List<Lot> lots = new ArrayList<>();
-        lots.add(new Lot(1L, "Lot A"));
-        lots.add(new Lot(2L, "Lot B"));
-        lots.add(new Lot(3L, "Lot C"));
-        return lots;
-    }
+    private Auction currentAuction;
 
     @Autowired
-    public AuctionService(AuctionDAO auctionDAO) {
-        this.auctionDAO = auctionDAO;
+    private AuctionRepository auctionRepository;
+
+    @Value("${auction.current.id}")
+    private int currentAuctionId;
+
+    @PostConstruct
+    public void initializeCurrentAuction() {
+        this.currentAuction = auctionRepository.findById(currentAuctionId)
+                .orElseThrow(() -> new IllegalArgumentException("Auction not found with id: " + currentAuctionId));
     }
 
+    public Auction getCurrentAuction() {
+        return currentAuction;
+    }
 
-    public List<Lot> getLots(int auctionId) {
-        Auction auction = getAuction(Constants.AUCTION_ID);
-        return auction == null || auction.getLotList().isEmpty() ? getLots() : auction.getLotList();
+    public void setCurrentAuction(Auction auction) {
+        this.currentAuction = auction;
+    }
+
+    public List<Lot> getLots(Long auctionId) {
+        Auction auction = getAuction(auctionId);
+        return auction == null || auction.getLotList().isEmpty() ? getDefaultLots() : auction.getLotList();
     }
 
     public String getLotNameById(int lotId) {
-        String lotName = getLotById(lotId).getName();
+        Lot lot = getLotById(lotId);
+        if (lot == null) {
+            return "Lot not found";
+        }
+        String lotName = lot.getName();
         return lotName == null || lotName.trim().isEmpty() ? "None" : lotName;
     }
 
-
-    private Auction getAuction(int auctionId) {
-        return auctionDAO.findById(auctionId).orElse(null);
+    private Auction getAuction(Long auctionId) {
+        return auctionRepository.findById(auctionId.intValue()).orElse(null);
     }
 
     public Lot getLotById(int lotId) {
-        List<Lot> lots = getLots(Constants.AUCTION_ID);
+        List<Lot> lots = getLots((long) currentAuctionId);
         if (lots == null || lots.isEmpty()) {
             return null;
         }
         return lots.stream().filter(x -> x.getId() == lotId).findFirst().orElse(null);
+    }
+
+    private List<Lot> getDefaultLots() {
+        List<Lot> lots = new ArrayList<>();
+        lots.add(new Lot(1, "Lot A"));
+        lots.add(new Lot(2, "Lot B"));
+        lots.add(new Lot(3, "Lot C"));
+        return lots;
     }
 }
