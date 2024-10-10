@@ -2,7 +2,9 @@ package com.application.auction.service;
 
 import com.application.auction.model.auction.Auction;
 import com.application.auction.model.auction.AuctionRepository;
+import com.application.auction.model.bid.Bid;
 import com.application.auction.model.lot.Lot;
+import com.application.auction.model.lot.LotRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import java.util.List;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private final LotRepository lotRepository;
 
     private Auction currentAuction;
 
@@ -92,5 +95,10 @@ public class AuctionService {
         lots.add(new Lot(2, "Lot B"));
         lots.add(new Lot(3, "Lot C"));
         return lots;
+    }
+
+    public void updateLot(Lot lot, Bid bid) {
+        lot.setHighestBid(bid);
+        lotRepository.save(lot);
     }
 }

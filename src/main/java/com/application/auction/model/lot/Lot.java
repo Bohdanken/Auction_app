@@ -1,7 +1,7 @@
 package com.application.auction.model.lot;
 
-import com.application.auction.model.bid.Bid;
 import com.application.auction.model.auction.Auction;
+import com.application.auction.model.bid.Bid;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +32,10 @@ public class Lot {
     @Column(name = "start_price")
     private double startPrice;
 
+    @JoinColumn(name = "highest_bid")
+    @OneToOne
+    private Bid highestBid;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id")
     private Auction auction;
@@ -45,7 +49,6 @@ public class Lot {
         this.startPrice = startPrice;
         this.auction = auction;
     }
-
 
     public Lot(Integer id, String name) {
         this.id = id;

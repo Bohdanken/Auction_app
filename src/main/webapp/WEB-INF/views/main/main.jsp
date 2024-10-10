@@ -22,6 +22,19 @@
                 <div class="item-content">
                     <p><strong>Item Name:</strong> ${lot.description}</p>
                     <p><strong>Starting Price:</strong> &pound; ${lot.startPrice}</p>
+                    <p>
+                        <strong>
+                            Current Highest Bid:
+                        </strong> &pound;
+                        <c:choose>
+                            <c:when test="${not empty lot.highestBid}">
+                                ${lot.highestBid.amount}
+                            </c:when>
+                            <c:otherwise>
+                                0.00
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
                 </div>
             </div>
         </c:forEach>

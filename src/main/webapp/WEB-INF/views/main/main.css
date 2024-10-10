@@ -1,6 +1,6 @@
 /* General Container Styling */
 .container {
-    max-width: 80%;
+    width: 80%;
     margin: 50px auto;
     text-align: center;
     font-family: 'Arial', sans-serif;
