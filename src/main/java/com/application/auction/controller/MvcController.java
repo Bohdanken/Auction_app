@@ -2,14 +2,19 @@ package com.application.auction.controller;
 
 import com.application.auction.model.account.Account;
 import com.application.auction.model.auction.Auction;
+import com.application.auction.model.auction.AuctionDTO;
 import com.application.auction.model.bid.Bid;
 import com.application.auction.model.lot.Lot;
+import com.application.auction.model.lot.LotDTO;
 import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
 import com.application.auction.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -18,6 +23,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -47,7 +54,7 @@ public class MvcController {
     }
 
     @GetMapping("/main")
-    public String showMainPage(Model model) {
+    public String showMainPage(Model model, ModelMap modelMap) {
         Auction currentAuction = auctionService.getCurrentAuction();
         if (currentAuction == null) {
             model.addAttribute("error", "No current auction is set.");
@@ -58,8 +65,8 @@ public class MvcController {
 
         model.addAttribute("auction", currentAuction);
         model.addAttribute("lots", lots);
-
-        model.addAttribute("totalRaised", lots.stream().map(bidService::getCurrentHighestBid).reduce(Double::sum).orElse(0D));
+        model.addAttribute("totalRaised", lots.stream().map(Lot::getHighestBid)
+                .filter(Objects::nonNull).map(Bid::getAmount).reduce(Double::sum).orElse(0D));
 
         return "main/main";
     }
@@ -110,7 +117,7 @@ public class MvcController {
             return "error/error_page";
         }
 
-        double currentHighestBid = bidService.getCurrentHighestBid(lot);
+        double currentHighestBid = lot.getHighestBid()!=null?lot.getHighestBid().getAmount():0;
         if (bidSize <= currentHighestBid || bidSize <= lot.getStartPrice()) {
             NumberFormat formatter = new DecimalFormat("#0.00");
             model.addAttribute("error", "Bid must be greater than the current highest bid of "
@@ -119,8 +126,8 @@ public class MvcController {
         }
 
 
-        bidService.makeBid(new Bid(bidSize), lot, existingAccount);
-
+        Bid bid = bidService.makeBid(new Bid(bidSize), lot, existingAccount);
+        auctionService.updateLot(lot, bid);
         auctionService.notifyClients();
 
         return "bid/bid_confirm";
@@ -131,6 +138,21 @@ public class MvcController {
         Lot lot = auctionService.getLotById(id);  // Assuming a service method to fetch the lot by id
         model.addAttribute("lot", lot);
         return "lot/lot_data";
+    }
+
+    @GetMapping("/main-data")
+    @ResponseBody
+    public AuctionDTO getAuctionData() {
+        Auction currentAuction = auctionService.getCurrentAuction();
+        List<LotDTO> lots = auctionService.getLots(currentAuction.getId()).stream()
+                .map(lot -> new LotDTO(lot.getId(), lot.getHighestBid()))
+                .collect(Collectors.toList());
+
+        double totalRaised = lots.stream()
+                .map(LotDTO::getHighestBid)
+                .reduce(Double::sum).orElse(0D);
+
+        return new AuctionDTO(totalRaised, lots);
     }
 
 }

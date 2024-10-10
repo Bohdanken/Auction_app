@@ -18,19 +18,11 @@ public class BidService {
         this.bidRepository = bidRepository;
     }
 
-    public boolean makeBid(Bid bid, Lot lot, Account account) {
+    public Bid makeBid(Bid bid, Lot lot, Account account) {
         bid.setLot(lot);
         bid.setTimeCreated(LocalDateTime.now());
         bid.setAccount(account);
-        Bid savedBid = bidRepository.save(bid);
-        return savedBid.getId() != null;
+        return bidRepository.save(bid);
     }
-
-
-    public Double getCurrentHighestBid(Lot lot) {
-        Double highestBid = bidRepository.findHighestBidForLot(lot.getId());
-        return highestBid != null ? highestBid : 0.0; // Returning 0.0 if no bids are present.
-    }
-
 
 }

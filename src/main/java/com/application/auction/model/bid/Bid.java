@@ -21,7 +21,7 @@ public class Bid {
     private Long id;
 
     @Column(name = "amount")
-    private double amount;
+    private double amount = 0.0;
 
     @Column(name = "time_created")
     private LocalDateTime timeCreated;

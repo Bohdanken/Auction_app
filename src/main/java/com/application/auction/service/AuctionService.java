@@ -2,7 +2,9 @@ package com.application.auction.service;
 
 import com.application.auction.model.auction.Auction;
 import com.application.auction.model.auction.AuctionRepository;
+import com.application.auction.model.bid.Bid;
 import com.application.auction.model.lot.Lot;
+import com.application.auction.model.lot.LotRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -19,6 +22,7 @@ import java.util.List;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private final LotRepository lotRepository;
 
     private Auction currentAuction;
 
@@ -51,13 +55,15 @@ public class AuctionService {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
-                emitter.send(SseEmitter.event().name("auctionUpdate").data("New bid placed"));
+                if (emitter != null)
+                    emitter.send(SseEmitter.event().name("auctionUpdate").data("New bid placed"));
             } catch (Exception e) {
                 deadEmitters.add(emitter);
                 log.error("Error notifying client: ", e);
             }
         });
         this.emitters.removeAll(deadEmitters);
+        this.emitters.remove(null);
     }
 
     public List<Lot> getLots(Long auctionId) {
@@ -92,5 +98,10 @@ public class AuctionService {
         lots.add(new Lot(2, "Lot B"));
         lots.add(new Lot(3, "Lot C"));
         return lots;
+    }
+
+    public void updateLot(Lot lot, Bid bid) {
+        lot.setHighestBid(bid);
+        lotRepository.save(lot);
     }
 }
