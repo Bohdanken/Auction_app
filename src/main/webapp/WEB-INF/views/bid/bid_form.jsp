@@ -34,7 +34,7 @@
 
         <div class="form-group">
             <label for="bidSize">Bid:</label>
-            <input type="number" step="0.01" id="bidSize" name="bidSize" placeholder="Enter bid size" required>
+            <input type="number" step="0.01" id="bidSize" name="bidSize" placeholder="Enter bid value" required>
         </div>
 
         <div class="form-group">
