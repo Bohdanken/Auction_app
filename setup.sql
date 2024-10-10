@@ -69,7 +69,24 @@ INSERT INTO auction (name, description, start_timestamp, end_timestamp)
 VALUES ('Cool Auction', 'Auction of Ukrainian items', '2024-10-15 10:00:00', '2024-10-15 13:00:00');
 
 -- Insert a lot linked to the auction
-INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id) VALUES ('Vintage Vase', 'A beautiful vintage vase from the 19th century', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+-- Insert a lot linked to the auction
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Vintage Vase', 'A beautiful vintage vase from the 19th century', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Antique Clock', 'A finely crafted antique clock from the early 20th century', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Rare Coin Collection', 'A collection of rare coins from various periods', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Vintage Leather Bag', 'A handcrafted leather bag from the 1920s in excellent condition', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Old World Map', 'A rare map of the world dating back to the 18th century', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
+
+INSERT INTO lot (name, description, image_url, start_price, order_num, auction_id)
+VALUES ('Classic Typewriter', 'A vintage typewriter from the 1930s, still in working condition', 'https://res.cloudinary.com/dewzwcjc4/image/upload/cld-sample-5.jpg', 100.00, 1, 1);
 
 -- Insert bids linked to the lot and accounts
 INSERT INTO bid (amount, time_created, account_id, lot_id) VALUES (120.00, '2024-10-15 10:15:00', 1, 1);
