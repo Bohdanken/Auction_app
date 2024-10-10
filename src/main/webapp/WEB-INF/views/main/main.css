@@ -1,6 +1,6 @@
 /* General Container Styling */
 .container {
-    max-width: 900px;
+    max-width: 80%;
     margin: 50px auto;
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -26,15 +26,15 @@ h2 {
 
 /* Items Grid Styling */
 .items-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    justify-items: center;
+    gap: 2vh;
     margin-bottom: 30px;
 }
 
 .item {
-    width: calc(50% - 20px);
+    width: 80%;
     min-width: 250px;
     background-color: #ffffff;
     padding: 20px;

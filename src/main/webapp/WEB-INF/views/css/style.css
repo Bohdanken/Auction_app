@@ -2,7 +2,7 @@
 body {
     margin: 0;
     padding: 0;
-    height: 100vh; /* Ensure the body covers the full height of the screen */
+    min-height: 100vh; /* Ensure the body covers the full height of the screen */
     background-image: url("../images/background.jpg"); /* Path to your image */
     background-size: cover; /* Ensures the image covers the entire area */
     background-position: center; /* Centers the image */
