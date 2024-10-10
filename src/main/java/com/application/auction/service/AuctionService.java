@@ -4,6 +4,7 @@ import com.application.auction.model.auction.Auction;
 import com.application.auction.model.auction.AuctionRepository;
 import com.application.auction.model.lot.Lot;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 public class AuctionService {
 
+    @Getter
     private Auction currentAuction;
 
     @Autowired
@@ -26,14 +28,6 @@ public class AuctionService {
     public void initializeCurrentAuction() {
         this.currentAuction = auctionRepository.findById(currentAuctionId)
                 .orElseThrow(() -> new IllegalArgumentException("Auction not found with id: " + currentAuctionId));
-    }
-
-    public Auction getCurrentAuction() {
-        return currentAuction;
-    }
-
-    public void setCurrentAuction(Auction auction) {
-        this.currentAuction = auction;
     }
 
     public List<Lot> getLots(Long auctionId) {

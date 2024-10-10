@@ -1,9 +1,8 @@
 package com.application.auction.controller;
 
-import com.application.auction.model.Bid.Bid;
 import com.application.auction.model.account.Account;
 import com.application.auction.model.auction.Auction;
-import com.application.auction.model.lot.Lot;
+import com.application.auction.model.bid.Bid;
 import com.application.auction.model.lot.Lot;
 import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
@@ -14,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,13 +94,15 @@ public class MvcController {
         Lot lot = auctionService.getLotById(lotId);
         if (lot == null) {
             model.addAttribute("error", "Invalid lot ID. Probably programmer messed up completely");
-            return "error_page";
+            return "error/error_page";
         }
 
         double currentHighestBid = bidService.getCurrentHighestBid(lot);
-        if (bidSize <= currentHighestBid || bidSize <=lot.getStartPrice()) {
-            model.addAttribute("error", "Bid must be greater than the current highest bid of " + currentHighestBid + ".");
-            return "error_page";
+        if (bidSize <= currentHighestBid || bidSize <= lot.getStartPrice()) {
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            model.addAttribute("error", "Bid must be greater than the current highest bid of "
+                    + formatter.format(currentHighestBid) + " £.\nYour bid is " + formatter.format(bidSize) + " £.");
+            return "error/error_page";
         }
 
 
@@ -114,7 +117,6 @@ public class MvcController {
         model.addAttribute("lot", lot);
         return "lot/lot_data";
     }
-
 
 
 }

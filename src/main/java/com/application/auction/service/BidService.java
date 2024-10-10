@@ -1,7 +1,7 @@
 package com.application.auction.service;
 
-import com.application.auction.model.Bid.Bid;
-import com.application.auction.model.Bid.BidRepository;
+import com.application.auction.model.bid.Bid;
+import com.application.auction.model.bid.BidRepository;
 import com.application.auction.model.account.Account;
 import com.application.auction.model.lot.Lot;
 import org.springframework.beans.factory.annotation.Autowired;

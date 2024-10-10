@@ -1,4 +1,4 @@
-package com.application.auction.model.Bid;
+package com.application.auction.model.bid;
 
 import com.application.auction.model.account.Account;
 import com.application.auction.model.lot.Lot;

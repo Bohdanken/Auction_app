@@ -1,6 +1,6 @@
 package com.application.auction.model.account;
 
-import com.application.auction.model.Bid.Bid;
+import com.application.auction.model.bid.Bid;
 import com.application.auction.model.auction.Auction;
 import jakarta.persistence.*;
 import lombok.Getter;
