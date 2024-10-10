@@ -95,7 +95,7 @@ public class MvcController {
 
         double currentHighestBid = bidService.getCurrentHighestBid(lot);
         if (bidSize <= currentHighestBid || bidSize <=lot.getStartPrice()) {
-            model.addAttribute("error", "Bid must be greater than the current highest bid of " + currentHighestBid + ".");
+            model.addAttribute("error", "Bid must be greater than the current highest bid");
             return "error_page";
         }
 
