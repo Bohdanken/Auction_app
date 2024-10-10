@@ -19,19 +19,16 @@
         <c:forEach items="${lots}" var="lot">
             <div class="item" id="lot-${lot.id}">
                 <div class="item-content">
-                    <p><strong>Item Name:</strong> ${lot.description}</p>
-                    <p><strong>Starting Price:</strong> &pound; ${lot.startPrice}</p>
+                    <p><strong>Item Name:</strong> ${lot.name}</p>
                     <p>
-                        <strong>
-                            Current Highest Bid:
-                        </strong> &pound;
-                        <span class="highest-bid" id="highest-bid-${lot.id}">
+                        <strong>Highest Bidder:</strong>
+                        <span id="highest-bid-${lot.id}">
                             <c:choose>
                                 <c:when test="${not empty lot.highestBid}">
-                                    ${lot.highestBid.amount}
+                                    ${lot.highestBid.account.name} - &pound; ${lot.highestBid.amount}
                                 </c:when>
                                 <c:otherwise>
-                                    0.00
+                                    Starting Price - &pound; ${lot.startPrice}
                                 </c:otherwise>
                             </c:choose>
                         </span>
@@ -52,7 +49,7 @@
     const eventSource = new EventSource("/auction-updates");
 
     // Listen for 'auctionUpdate' event
-    eventSource.addEventListener("auctionUpdate", function(event) {
+    eventSource.addEventListener("auctionUpdate", function (event) {
         console.log("Received auction update: ", event.data);
 
         // Fetch updated auction data (highest bids and total raised) via AJAX
@@ -67,14 +64,20 @@
     // Function to update the highest bids and total raised
     function updateAuctionData(data) {
         // Update total raised
-        console.log(data);
         document.getElementById("total-raised").textContent = data.totalRaised.toFixed(2);
 
-        // Update each lot's highest bid
+        // Update each lot's highest bid and bidder info
         data.lots.forEach(lot => {
             let bidElement = document.getElementById("highest-bid-" + lot.id);
+            console.log(bidElement);
             if (bidElement) {
-                bidElement.textContent = lot.highestBid ? lot.highestBid.toFixed(2) : "0.00";
+                console.log(lot);
+
+                if (lot) {
+                    bidElement.innerHTML = lot.name + " - &pound; " + lot.highestBid.toFixed(2);
+                } else {
+                    bidElement.innerHTML = "Starting Price - &pound; " + lot.startPrice.toFixed(2);
+                }
             }
         });
     }
