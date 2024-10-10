@@ -52,15 +52,6 @@ CREATE TABLE IF NOT EXISTS bid (
     REFERENCES lot(id)
     );
 
-CREATE TABLE IF NOT EXISTS account_auction (
-                                               account_id INT NOT NULL,
-                                               auction_id INT NOT NULL,
-                                               PRIMARY KEY (account_id, auction_id),
-    FOREIGN KEY (account_id)
-    REFERENCES account(id),
-    FOREIGN KEY (auction_id)
-    REFERENCES auction(id)
-    );
 
 
 -- Insert a basic account

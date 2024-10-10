@@ -35,14 +35,7 @@ public class Auction {
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private List<Lot> lotList;
-
-    @ManyToMany
-    @JoinTable(
-            name = "account_auction",
-            joinColumns = @JoinColumn(name = "auction_id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id")
-    )
-    private List<Account> accounts;
+    
 
     public Auction(String name, String description, LocalDateTime endTimestamp,  LocalDateTime startTimestamp) {
         this.name = name;
