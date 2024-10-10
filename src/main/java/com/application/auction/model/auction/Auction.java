@@ -35,7 +35,7 @@ public class Auction {
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private List<Lot> lotList;
-    
+
 
     public Auction(String name, String description, LocalDateTime endTimestamp,  LocalDateTime startTimestamp) {
         this.name = name;
