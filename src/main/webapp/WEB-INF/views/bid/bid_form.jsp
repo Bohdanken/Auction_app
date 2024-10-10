@@ -5,6 +5,7 @@
     <title>Account Form</title>
     <style><%@include file="/WEB-INF/views/bid/bid_form.css"%></style>
 </head>
+
 <body>
 <div class="container">
     <h2>Bid Information</h2>

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,22 +40,38 @@ public class MvcController {
 
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/main";
     }
 
-    @GetMapping("/register")
-    public String showForm(Model model) {
-        Account user = new Account();
-        List<String> professionList = Arrays.asList("Developer", "Designer", "Tester");
+    @GetMapping("/main-page")
+    public String showMainPage(Model model) {
+        Auction currentAuction = auctionService.getCurrentAuction();
+        if (currentAuction == null) {
+            model.addAttribute("error", "No current auction is set.");
+            return "error_page";
+        }
 
-        model.addAttribute("user", user);
+        List<Lot> lots = auctionService.getLots(currentAuction.getId());
 
-        model.addAttribute("professionList", professionList);
+        model.addAttribute("auction", currentAuction);
+        model.addAttribute("lots", lots);
 
-        return "register_form";
+        model.addAttribute("totalRaised",  1000);   //TODO  напиши оце також!!!
+
+        return "main";
     }
+
+
+    @GetMapping("/auction-updates")
+    public SseEmitter getAuctionUpdates() {
+        SseEmitter emitter = new SseEmitter();
+        auctionService.addEmitter(emitter);
+        return emitter;
+    }
+
+
 
     @GetMapping("/bid")
     public String showBidForm(Model model) {
@@ -102,8 +119,13 @@ public class MvcController {
 
         bidService.makeBid(new Bid(bidSize), lot, existingAccount);
 
+        auctionService.notifyClients();
+
         return "bid/bid_confirm";
     }
+
+
+
 
 
 

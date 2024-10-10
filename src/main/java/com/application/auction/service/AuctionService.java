@@ -4,23 +4,28 @@ import com.application.auction.model.auction.Auction;
 import com.application.auction.model.auction.AuctionRepository;
 import com.application.auction.model.lot.Lot;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AuctionService {
+
+    private final AuctionRepository auctionRepository;
 
     private Auction currentAuction;
 
-    @Autowired
-    private AuctionRepository auctionRepository;
-
     @Value("${auction.current.id}")
     private int currentAuctionId;
+
+    private final List<SseEmitter> emitters = new ArrayList<>();
 
     @PostConstruct
     public void initializeCurrentAuction() {
@@ -34,6 +39,25 @@ public class AuctionService {
 
     public void setCurrentAuction(Auction auction) {
         this.currentAuction = auction;
+    }
+
+    public void addEmitter(SseEmitter emitter) {
+        this.emitters.add(emitter);
+        emitter.onCompletion(() -> this.emitters.remove(emitter));
+        emitter.onTimeout(() -> this.emitters.remove(emitter));
+    }
+
+    public void notifyClients() {
+        List<SseEmitter> deadEmitters = new ArrayList<>();
+        this.emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event().name("auctionUpdate").data("New bid placed"));
+            } catch (Exception e) {
+                deadEmitters.add(emitter);
+                log.error("Error notifying client: ", e);
+            }
+        });
+        this.emitters.removeAll(deadEmitters);
     }
 
     public List<Lot> getLots(Long auctionId) {
