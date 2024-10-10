@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS lot (
                                    start_price NUMERIC(10, 2) DEFAULT 0.00,
     order_num INT NOT NULL,
     auction_id INT,
+    highest_bid INT,
     PRIMARY KEY (id),
     FOREIGN KEY (auction_id)
     REFERENCES auction(id)
