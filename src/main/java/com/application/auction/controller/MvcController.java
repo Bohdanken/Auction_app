@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -47,12 +46,12 @@ public class MvcController {
         return "redirect:/main";
     }
 
-    @GetMapping("/main-page")
+    @GetMapping("/main")
     public String showMainPage(Model model) {
         Auction currentAuction = auctionService.getCurrentAuction();
         if (currentAuction == null) {
             model.addAttribute("error", "No current auction is set.");
-            return "error_page";
+            return "error/error_page";
         }
 
         List<Lot> lots = auctionService.getLots(currentAuction.getId());
@@ -60,9 +59,9 @@ public class MvcController {
         model.addAttribute("auction", currentAuction);
         model.addAttribute("lots", lots);
 
-        model.addAttribute("totalRaised",  1000);   //TODO  напиши оце також!!!
+        model.addAttribute("totalRaised", 1000);   //TODO  напиши оце також!!!
 
-        return "main";
+        return "main/main";
     }
 
 
@@ -72,7 +71,6 @@ public class MvcController {
         auctionService.addEmitter(emitter);
         return emitter;
     }
-
 
 
     @GetMapping("/bid")
@@ -95,7 +93,7 @@ public class MvcController {
         Auction currentAuction = auctionService.getCurrentAuction();
         if (currentAuction == null) {
             model.addAttribute("error", "No current auction is set.");
-            return "error_page";
+            return "error/error_page";
         }
         account.setAuctions(new ArrayList<>(List.of(new Auction[]{currentAuction})));
         account.setPassword("");
@@ -113,9 +111,6 @@ public class MvcController {
         }
 
         double currentHighestBid = bidService.getCurrentHighestBid(lot);
-        if (bidSize <= currentHighestBid || bidSize <=lot.getStartPrice()) {
-            model.addAttribute("error", "Bid must be greater than the current highest bid");
-            return "error_page";
         if (bidSize <= currentHighestBid || bidSize <= lot.getStartPrice()) {
             NumberFormat formatter = new DecimalFormat("#0.00");
             model.addAttribute("error", "Bid must be greater than the current highest bid of "
@@ -137,9 +132,5 @@ public class MvcController {
         model.addAttribute("lot", lot);
         return "lot/lot_data";
     }
-
-
-
-
 
 }

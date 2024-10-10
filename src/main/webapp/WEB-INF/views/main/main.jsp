@@ -3,7 +3,10 @@
 <html>
 <head>
     <title>Main Page - Current Auction</title>
-    <style><%@include file="/WEB-INF/views/bid/main.css"%></style>
+    <style>
+        <%@include file="/WEB-INF/views/main/main.css"%>
+        <%@include file="/WEB-INF/views/css/style.css" %>
+    </style>
 </head>
 
 <body>
