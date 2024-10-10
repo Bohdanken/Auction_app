@@ -1,0 +1,57 @@
+/* Lot name styling */
+.lot-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Lot description styling */
+.lot-description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    padding: 0 10px;
+}
+
+
+.lot-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+
+/* Styling for the image */
+.lot-image {
+    width: 100%; /* Image takes full width of the container */
+    max-width: 300px; /* Max width for larger screens */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensures the image is treated as a block-level element */
+    margin: 0 auto; /* Centers the image horizontally */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for aesthetics */
+}
+
+/* For larger screens (e.g., tablets, desktops) */
+@media (min-width: 768px) {
+    .lot-image {
+        max-width: 400px; /* Increase max width for larger screens */
+    }
+}
+
+/* For smaller screens (mobile phones) */
+@media (max-width: 768px) {
+    .lot-image {
+        max-width: 90%; /* Image takes 90% of the screen width on mobile */
+        margin: 0 auto; /* Center the image on mobile devices */
+    }
+}
+
+

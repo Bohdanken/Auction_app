@@ -2,6 +2,7 @@ package com.application.auction.controller;
 
 import com.application.auction.model.Bid;
 import com.application.auction.model.account.Account;
+import com.application.auction.model.lot.Lot;
 import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
 import com.application.auction.service.BidService;
@@ -80,5 +81,12 @@ public class MvcController {
         //TODO: Add validation of bigger bid
         bidService.makeBid(new Bid(bidSize), auctionService.getLotById(lotId), existingAccount);
         return "bid/bid_confirm";
+    }
+
+    @GetMapping("/lot/{id}")
+    public String getLotDetails(@PathVariable("id") Integer id, Model model) {
+        Lot lot = auctionService.getLotById(id);  // Assuming a service method to fetch the lot by id
+        model.addAttribute("lot", lot);
+        return "lot/lot_data";
     }
 }

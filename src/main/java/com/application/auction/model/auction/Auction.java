@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -28,10 +29,11 @@ public class Auction {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "duration")
-    private Duration duration;
+    @Column(name = "duration", columnDefinition = "INTERVAL")
+    private LocalTime duration;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private AuctionStatus status;
 
     @Column(name = "start_timestamp")
@@ -48,7 +50,7 @@ public class Auction {
     )
     private List<Account> accounts;
 
-    public Auction(String name, String description, Duration duration, AuctionStatus status, LocalDateTime startTimestamp) {
+    public Auction(String name, String description, LocalTime duration, AuctionStatus status, LocalDateTime startTimestamp) {
         this.name = name;
         this.description = description;
         this.duration = duration;

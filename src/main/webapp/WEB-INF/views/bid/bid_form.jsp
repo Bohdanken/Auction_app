@@ -1,9 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Account Form</title>
-    <style><%@include file="/WEB-INF/views/bid/bid_form.css"%></style>
+    <style>
+        <%@include file="/WEB-INF/views/bid/bid_form.css"%>
+        <%@include file="/WEB-INF/views/css/style.css" %>
+    </style>
 </head>
 <body>
 <div class="container">
@@ -15,7 +18,8 @@
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="${account.email}" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" value="${account.email}" placeholder="Enter your email"
+                   required>
         </div>
 
         <div class="form-group">

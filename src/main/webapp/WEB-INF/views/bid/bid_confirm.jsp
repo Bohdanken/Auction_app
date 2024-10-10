@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css">
     <style>
         <%@include file="/WEB-INF/views/bid/bid_confirm.css" %>
+        <%@include file="/WEB-INF/views/css/style.css"%>
     </style>
 
 </head>

@@ -17,16 +17,19 @@ import java.util.List;
 public class Lot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="start_price")
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "start_price")
     private double startPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +45,6 @@ public class Lot {
         this.startPrice = startPrice;
         this.auction = auction;
     }
-
 
 
     public Lot(Long id, String name) {
