@@ -12,27 +12,30 @@
 <body>
 <div class="container">
     <!-- Auction Title -->
-    <h2>Current Auction: ${auction.description}</h2>
+    <h2>${auction.description}</h2>
 
     <!-- Items Table -->
     <div class="items-grid" id="lots-container">
         <c:forEach items="${lots}" var="lot">
             <div class="item" id="lot-${lot.id}">
                 <div class="item-content">
-                    <p><strong>Item Name:</strong> ${lot.name}</p>
-                    <p>
-                        <strong>Highest Bidder:</strong>
-                        <span id="highest-bid-${lot.id}">
-                            <c:choose>
-                                <c:when test="${not empty lot.highestBid}">
-                                    ${lot.highestBid.account.name} - &pound; ${lot.highestBid.amount}
-                                </c:when>
-                                <c:otherwise>
-                                    Starting Price - &pound; ${lot.startPrice}
-                                </c:otherwise>
-                            </c:choose>
-                        </span>
-                    </p>
+                    <img src="${lot.imageUrl}" alt="${lot.name}"/>
+                    <div class="text-overlay">
+                        <p><strong>Name:</strong> ${lot.name}</p>
+                        <p>
+                            <strong>Highest Bidder:</strong>
+                            <span id="highest-bid-${lot.id}">
+                                <c:choose>
+                                    <c:when test="${not empty lot.highestBid}">
+                                        ${lot.highestBid.account.name} - &pound; ${lot.highestBid.amount}
+                                    </c:when>
+                                    <c:otherwise>
+                                        Starting Price - &pound; ${lot.startPrice}
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </c:forEach>
