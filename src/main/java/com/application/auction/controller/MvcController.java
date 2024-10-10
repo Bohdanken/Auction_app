@@ -2,12 +2,16 @@ package com.application.auction.controller;
 
 import com.application.auction.model.account.Account;
 import com.application.auction.model.auction.Auction;
+import com.application.auction.model.auction.AuctionDTO;
 import com.application.auction.model.bid.Bid;
 import com.application.auction.model.lot.Lot;
+import com.application.auction.model.lot.LotDTO;
 import com.application.auction.service.AccountService;
 import com.application.auction.service.AuctionService;
 import com.application.auction.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,6 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -133,6 +138,21 @@ public class MvcController {
         Lot lot = auctionService.getLotById(id);  // Assuming a service method to fetch the lot by id
         model.addAttribute("lot", lot);
         return "lot/lot_data";
+    }
+
+    @GetMapping("/main-data")
+    @ResponseBody
+    public AuctionDTO getAuctionData() {
+        Auction currentAuction = auctionService.getCurrentAuction();
+        List<LotDTO> lots = auctionService.getLots(currentAuction.getId()).stream()
+                .map(lot -> new LotDTO(lot.getId(), lot.getHighestBid()))
+                .collect(Collectors.toList());
+
+        double totalRaised = lots.stream()
+                .map(LotDTO::getHighestBid)
+                .reduce(Double::sum).orElse(0D);
+
+        return new AuctionDTO(totalRaised, lots);
     }
 
 }

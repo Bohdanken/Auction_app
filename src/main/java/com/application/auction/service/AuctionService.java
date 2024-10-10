@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -54,13 +55,15 @@ public class AuctionService {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
-                emitter.send(SseEmitter.event().name("auctionUpdate").data("New bid placed"));
+                if (emitter != null)
+                    emitter.send(SseEmitter.event().name("auctionUpdate").data("New bid placed"));
             } catch (Exception e) {
                 deadEmitters.add(emitter);
                 log.error("Error notifying client: ", e);
             }
         });
         this.emitters.removeAll(deadEmitters);
+        this.emitters.remove(null);
     }
 
     public List<Lot> getLots(Long auctionId) {
