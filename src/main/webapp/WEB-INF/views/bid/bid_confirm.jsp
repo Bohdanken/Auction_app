@@ -6,15 +6,15 @@
     <title>Bid Confirmation</title>
     <link rel="stylesheet" type="text/css">
     <style>
-        <%@include file="/WEB-INF/views/bid/bid_confirm.css" %>
         <%@include file="/WEB-INF/views/css/style.css"%>
+        <%@include file="/WEB-INF/views/bid/bid_confirm.css" %>
     </style>
 
 </head>
 <body>
 <div class="container">
     <h2>Bid Submitted Successfully!</h2>
-    <p>Thank you for submitting your bid. Your bid has been successfully placed.</p>
+    <p>Thank you for submitting your bid. </p>
 
     <!-- Display some details if needed -->
     <p>Bid Amount: <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${bidSize}"/> £</p>

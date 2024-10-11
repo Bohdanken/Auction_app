@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Page</title>
     <style>
-        <%@include file="/WEB-INF/views/error/error_page.css"%>
         <%@include file="/WEB-INF/views/css/style.css" %>
+        <%@include file="/WEB-INF/views/error/error_page.css"%>
     </style>
 </head>
 <body>

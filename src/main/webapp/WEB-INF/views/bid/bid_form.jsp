@@ -4,8 +4,8 @@
 <head>
     <title>Account Form</title>
     <style>
-        <%@include file="/WEB-INF/views/bid/bid_form.css"%>
         <%@include file="/WEB-INF/views/css/style.css" %>
+        <%@include file="/WEB-INF/views/bid/bid_form.css"%>
     </style>
 </head>
 

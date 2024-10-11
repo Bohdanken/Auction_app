@@ -1,14 +1,17 @@
 .container {
-    width: 50%;
-    background-color: white;
+    width: 60%;
+    background-color: rgba(249, 249, 249, 0.63);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.3em;
+    color: black;
 }
 
 h2 {
+    margin: 0;
+    font-size: 1.8em;
     text-align: center;
-    color: #333;
 }
 
 .form-group {
@@ -18,7 +21,6 @@ h2 {
 label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
 }
 
 input[type="text"], input[type="email"], input[type="number"], select {
@@ -44,5 +46,6 @@ button:hover {
     background-color: #45a049;
 }
 body{
-    background-image:
+    background-image: url("../images/background_1.jpg");
+    background-position: left top;
 }
