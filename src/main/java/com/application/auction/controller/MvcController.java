@@ -102,7 +102,6 @@ public class MvcController {
             model.addAttribute("error", "No current auction is set.");
             return "error/error_page";
         }
-        account.setAuctions(new ArrayList<>(List.of(new Auction[]{currentAuction})));
         account.setPassword("");
 
         model.addAttribute("account", account);
@@ -120,8 +119,8 @@ public class MvcController {
         double currentHighestBid = lot.getHighestBid()!=null?lot.getHighestBid().getAmount():0;
         if (bidSize <= currentHighestBid || bidSize <= lot.getStartPrice()) {
             NumberFormat formatter = new DecimalFormat("#0.00");
-            model.addAttribute("error", "Bid must be greater than the current highest bid of "
-                    + formatter.format(currentHighestBid) + " £.\nYour bid is " + formatter.format(bidSize) + " £.");
+            model.addAttribute("error", "Bid must be greater than the current highest bid! "
+                    + " Your bid is " + formatter.format(bidSize) + " £.");
             return "error/error_page";
         }
 

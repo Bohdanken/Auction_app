@@ -33,13 +33,7 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Bid> bids;
 
-    @ManyToMany
-    @JoinTable(
-            name = "account_auction",
-            joinColumns = @JoinColumn(name="account_id"),
-            inverseJoinColumns = @JoinColumn(name="auction_id")
-    )
-    private List<Auction> auctions;
+
 
 
     public Account(String name, String email, String password) {
