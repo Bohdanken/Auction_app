@@ -21,9 +21,9 @@
                 <div class="item-content">
                     <img src="${lot.imageUrl}" alt="${lot.name}"/>
                     <div class="text-overlay">
-                        <p><strong>Name:</strong> ${lot.name}</p>
+                        <p><strong>${lot.name}</strong></p>
                         <p>
-                            <strong>Highest Bidder:</strong>
+                            <strong>Top Bidder:</strong>
                             <span id="highest-bid-${lot.id}">
                                 <c:choose>
                                     <c:when test="${not empty lot.highestBid}">
