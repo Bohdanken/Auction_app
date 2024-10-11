@@ -1,3 +1,4 @@
+
 .error-container {
     display: flex;
     flex-direction: column;
@@ -12,9 +13,10 @@
 }
 
 h2 {
-    color: #cc1717; /* Red color for the error message */
+    color: #cc1717;
     font-size: 2em;
 }
+
 p{
     font-weight: bold;
     font-size: 0.9em;
@@ -28,5 +30,5 @@ p{
 
 body{
     background-image: url("../images/background_1.jpg");
-    background-position: left top;
+    background-position: left;
 }
