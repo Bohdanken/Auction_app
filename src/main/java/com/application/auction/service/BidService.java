@@ -30,7 +30,12 @@ public class BidService {
         bid.setLot(lot);
         bid.setTimeCreated(LocalDateTime.now());
         bid.setAccount(account);
+        makeCoolSound();
         return bidRepository.save(bid);
+    }
+
+    private void makeCoolSound() {
+        
     }
 
 }
