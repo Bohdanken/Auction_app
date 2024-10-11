@@ -1,14 +1,31 @@
 .error-container {
+    display: flex;
+    flex-direction: column;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0 30px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: rgba(249, 249, 249, 0.47);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 h2 {
-    color: #a12e2e; /* Red color for the error message */
+    color: #cc1717; /* Red color for the error message */
+    font-size: 2em;
+}
+p{
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+@media(max-width: 500px){
+    .container{
+        width: 300px;
+    }
+}
+
+body{
+    background-image:
 }

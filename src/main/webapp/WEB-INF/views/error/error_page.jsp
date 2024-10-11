@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="error-container">
-        <h2>Something went wrong!</h2>
+        <h2>Kurwa!</h2>
         <p>${error}</p>
         <a href="/bid" class="back-btn">Try again</a>
     </div>
